@@ -8,7 +8,6 @@ Pod::Spec.new do |spec|
                    DESC
 
   spec.homepage     = "http://shenhongbang.cc"
-  spec.license      = "MIT (example)"
   spec.license      = { :type => "MIT", :file => "LICENSE" }
 
   spec.author       = { "沈红榜" => "shenhongbang@163.com" }
@@ -17,6 +16,6 @@ Pod::Spec.new do |spec|
 
   spec.source_files  = "HBRefresh/HBRefresh/*"
   spec.swift_version = '6.0'
-  spec.platform     = :ios, "16.0"
+  spec.ios.deployment_target = '16.0'
 
 end
