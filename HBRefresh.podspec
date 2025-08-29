@@ -17,5 +17,6 @@ Pod::Spec.new do |spec|
 
   spec.source_files  = "HBRefresh/HBRefresh/*"
   spec.swift_version = '6.0'
+  spec.platform     = :ios, "16.0"
 
 end
