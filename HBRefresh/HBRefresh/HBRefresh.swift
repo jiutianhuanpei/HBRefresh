@@ -29,7 +29,7 @@ extension HBRefreshExtend {
 
 public typealias RefreshHandler = ()->Void
 
-enum RefreshState {
+public enum RefreshState {
     case Idle
     case Pulling
     case WillRefresh

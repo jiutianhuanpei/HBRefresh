@@ -30,7 +30,7 @@ extension UIScrollView : HBRefreshExtend {
 
 extension HBRefreshExtension where ExtendType : UIScrollView {
     
-    var header: RefreshComponent? {
+    private var header: RefreshComponent? {
         let theader = type.subviews.filter {
             if let v = $0 as? RefreshComponent {
                 return v.type == .Header
@@ -43,7 +43,7 @@ extension HBRefreshExtension where ExtendType : UIScrollView {
         return nil
     }
     
-    var footer: RefreshComponent? {
+    private var footer: RefreshComponent? {
         let theader = type.subviews.filter {
             if let v = $0 as? RefreshComponent {
                 return v.type == .Footer
@@ -56,7 +56,7 @@ extension HBRefreshExtension where ExtendType : UIScrollView {
         return nil
     }
     
-    func addHeader(_ animator: RefreshAnimator, handler: @escaping RefreshHandler) {
+    public func addHeader(_ animator: RefreshAnimator, handler: @escaping RefreshHandler) {
         header?.removeFromSuperview()
         
         let view = RefreshComponent(animator: animator, addTo: type, type: .Header)
@@ -65,18 +65,8 @@ extension HBRefreshExtension where ExtendType : UIScrollView {
         type.observer.addDelegate(view)
         type.observer.monitorScrollView(type)
     }
-    func endRefresh() {
- 
-        let headers = type.subviews.filter {
-            ($0 as? RefreshComponent)?.type == .Header
-        }
-        if let header = headers.first as? RefreshComponent {
-            header.stop()
-        }
-    }
-    
-    
-    func addFooter(_ animator: RefreshAnimator, handler: @escaping RefreshHandler) {
+
+    public func addFooter(_ animator: RefreshAnimator, handler: @escaping RefreshHandler) {
         footer?.removeFromSuperview()
         
         let view = RefreshComponent(animator: animator, addTo: type, type: .Footer)
@@ -86,20 +76,28 @@ extension HBRefreshExtension where ExtendType : UIScrollView {
         type.observer.monitorScrollView(type)
     }
     
-    func endLoadMoreData() {
-        let headers = type.subviews.filter {
-            ($0 as? RefreshComponent)?.type == .Footer
-        }
-        if let header = headers.first as? RefreshComponent {
-            header.stop()
-        }
+    public func beginRefresh() {
+        header?.start()
     }
+    
+    public func endRefresh() {
+        header?.stop()
+    }
+    
+    public func beginLoadMoreData() {
+        footer?.start()
+    }
+    
+    public func endLoadMoreData() {
+        footer?.stop()
+    }
+    
 }
 
 
-private extension NSLayoutConstraint {
-    func configPriority(_ priority: UILayoutPriority) -> Self {
-        self.priority = priority
-        return self
-    }
-}
+//private extension NSLayoutConstraint {
+//    func configPriority(_ priority: UILayoutPriority) -> Self {
+//        self.priority = priority
+//        return self
+//    }
+//}

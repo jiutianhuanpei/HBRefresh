@@ -34,7 +34,7 @@ class RefreshComponent: UIView, ScrollContentOffsetChangePtotocol {
     private var rightConstraint: NSLayoutConstraint?
     private var bottomConstraint: NSLayoutConstraint?
     private var heightConstraint: NSLayoutConstraint?
- 
+    
     init(animator: RefreshAnimator, addTo scrollView: UIScrollView, type: ViewType) {
         self.animator = animator
         self.scrollView = scrollView
@@ -103,10 +103,20 @@ class RefreshComponent: UIView, ScrollContentOffsetChangePtotocol {
                 let tt = scrollView.adjustedContentInset.top + animator.trigger
                 scrollView.setContentOffset(.init(x: 0, y: -tt), animated: true)
             } else {
-                let h = scrollView.contentSize.height - (scrollView.bounds.height - scrollView.safeAreaInsets.top - scrollView.safeAreaInsets.bottom)
                 
-                let kh = h >= 0 ? 0 : abs(h)
-                scrollView.contentInset.bottom = storeageInset.bottom + animator.trigger + kh
+                let top = scrollView.contentInset.top
+                let topSafe = scrollView.safeAreaInsets.top
+                let contentH = scrollView.contentSize.height;
+                let bottom = scrollView.contentInset.bottom
+                let bottomSafe = scrollView.safeAreaInsets.bottom
+                
+                if topSafe + top + contentH + bottom + bottomSafe < scrollView.bounds.height {
+                    //不够一屏
+                    let top = scrollView.bounds.height - scrollView.safeAreaInsets.top - scrollView.contentInset.top - contentH
+                    scrollView.contentInset.bottom = top + animator.trigger
+                } else {
+                    scrollView.contentInset.bottom = storeageInset.bottom + animator.trigger + bottomSafe
+                }
             }
         }
     }
@@ -124,7 +134,7 @@ class RefreshComponent: UIView, ScrollContentOffsetChangePtotocol {
     //MARK: - noti
     func scrollViewContentOffsetChanged(_ scrollView: UIScrollView, change: NSKeyValueObservedChange<CGPoint>) {
         guard let oldValue = change.oldValue,
-        let newValue = change.newValue else { return }
+              let newValue = change.newValue else { return }
         
         let delate = newValue.y - oldValue.y
         let isDragging = scrollView.isDragging
@@ -152,11 +162,11 @@ class RefreshComponent: UIView, ScrollContentOffsetChangePtotocol {
             }
             
             if !isDragging, lastIsDragging, state == .WillRefresh {
-//                state = .Refreshing
+                //                state = .Refreshing
                 start()
             }
             
-            if !scrollDown, newValue.y + safeH > 0, state != .Idle {
+            if !scrollDown, newValue.y + safeH >= 0, state != .Idle {
                 state = .Idle
                 animator.refreshIdle(scrollView)
             }
@@ -164,11 +174,10 @@ class RefreshComponent: UIView, ScrollContentOffsetChangePtotocol {
             break
         case .Footer:
             let bottomSafe = scrollView.safeAreaInsets.bottom
-
+            
             let offsetY1 = frame.origin.y + bottomSafe - scrollView.bounds.height
             if isDragging {
                 if newValue.y > offsetY1 {
-                    
                     if newValue.y - offsetY1 > animator.trigger {
                         state = .WillRefresh
                         animator.refreshWillRefresh(scrollView)
@@ -183,11 +192,11 @@ class RefreshComponent: UIView, ScrollContentOffsetChangePtotocol {
             }
             
             if !isDragging, lastIsDragging, state == .WillRefresh {
-//                state = .Refreshing
+                //                state = .Refreshing
                 start()
             }
             
-            if scrollDown, newValue.y < offsetY1, state != .Idle {
+            if scrollDown, newValue.y <= offsetY1, state != .Idle {
                 state = .Idle
                 animator.refreshIdle(scrollView)
             }
@@ -197,15 +206,22 @@ class RefreshComponent: UIView, ScrollContentOffsetChangePtotocol {
         lastIsDragging = isDragging
     }
     
-
-    
     func scrollViewContentSizeChanged(_ scrollView: UIScrollView, change: NSKeyValueObservedChange<CGSize>) {
         guard let size = change.newValue,
               type == .Footer, state == .Idle else {
             return
         }
-        let h = max(size.height, scrollView.bounds.height - scrollView.safeAreaInsets.top - scrollView.safeAreaInsets.bottom)
-        topConstraint?.constant = h + scrollView.contentInset.bottom
+        let topSafe = scrollView.safeAreaInsets.top
+        let bottomSafe = scrollView.safeAreaInsets.bottom
+        let top = scrollView.contentInset.top
+        let bottom = scrollView.contentInset.bottom
+        
+        if topSafe + top + size.height + bottom + bottomSafe < scrollView.bounds.height {
+            //不够一屏
+            topConstraint?.constant = scrollView.bounds.height - topSafe - top
+        } else {
+            topConstraint?.constant = size.height + bottom + bottomSafe
+        }
     }
 }
 

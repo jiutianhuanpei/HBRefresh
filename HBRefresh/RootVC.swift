@@ -8,14 +8,14 @@
 import UIKit
 
 class RootVC: UIViewController {
-    var rowNum = 10
+    var rowNum = 5
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         view.addSubview(table)
         table.translatesAutoresizingMaskIntoConstraints = false
-//        table.contentInset = .init(top: 50, left: 0, bottom: 50, right: 0)
+//        table.contentInset = .init(top: 10, left: 0, bottom: 500, right: 0)
         
         let ar = [
             table.leftAnchor.constraint(equalTo: view.leftAnchor),
@@ -25,19 +25,63 @@ class RootVC: UIViewController {
         ]
         NSLayoutConstraint.activate(ar)
         
-        table.hb.addHeader(HBNormalHeaderAnimator()) {
+        let header = HBNormalHeaderAnimator()
+        header.setTitle("~~~~ . ~~~~", for: .Idle)
+        table.hb.addHeader(header) {
             print("下拉刷新")
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [self] in
-                table.hb.header?.stop()
+                table.hb.endRefresh()
             }
         }
-        table.hb.addFooter(HBNormalFooterAnimator()) {
+        
+        let footer = HBNormalFooterAnimator()
+        footer.setTitle("", for: .Pulling)
+        table.hb.addFooter(footer) {
             print("上拉加载")
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [self] in
                 table.hb.endLoadMoreData()
             }
         }
         
+        let tap = UITapGestureRecognizer(target: self, action: #selector(Self.tapTable(_:)))
+//        table.addGestureRecognizer(tap)
+        
+        
+
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        let v = UIView()
+        v.backgroundColor = .black.withAlphaComponent(0.2)
+        v.frame = CGRect(x: 0, y: view.bounds.height - table.safeAreaInsets.bottom, width: view.bounds.width, height: table.safeAreaInsets.bottom)
+        view.addSubview(v)
+        
+    }
+    
+    @objc func tapTable(_ ges: UITapGestureRecognizer) {
+        
+        let top = UIView()
+        top.backgroundColor = .green.withAlphaComponent(0.2)
+        top.frame = CGRect(x: 0, y: -table.contentInset.top, width: view.frame.width, height: table.contentInset.top)
+        table.addSubview(top)
+        
+        
+        let v = UIView(frame: .init(origin: .zero, size: table.contentSize))
+        v.backgroundColor = .red.withAlphaComponent(0.2)
+        table.addSubview(v)
+        
+        let bottom = UIView()
+        bottom.backgroundColor = .green.withAlphaComponent(0.2)
+        bottom.frame = CGRect(x: 0, y: table.contentSize.height, width: view.frame.width, height: table.contentInset.bottom)
+        table.addSubview(bottom)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            top.removeFromSuperview()
+            v.removeFromSuperview()
+            bottom.removeFromSuperview()
+        }
     }
     
     //MARK: - getter
@@ -79,9 +123,9 @@ extension RootVC : UITableViewDataSource, UITableViewDelegate {
         print("====  \(tableView.hb)")
         switch indexPath.row {
         case 0:
-            tableView.hb.header?.start()
+            tableView.hb.beginRefresh()
         case 1, rowNum-1:
-            tableView.hb.footer?.start()
+            tableView.hb.beginLoadMoreData()
             let row = tableView.numberOfRows(inSection: 0)
             tableView.scrollToRow(at: .init(row: row-1, section: 0), at: .bottom, animated: true)
         case 2:

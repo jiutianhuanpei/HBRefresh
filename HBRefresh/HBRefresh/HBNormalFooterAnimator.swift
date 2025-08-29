@@ -7,24 +7,25 @@
 
 import UIKit
 
-class HBNormalFooterAnimator: UIView, RefreshAnimator {
-    var view: UIView { self }
-    var hb_height: CGFloat { 160 }
-    var trigger: CGFloat { 50 }
+public class HBNormalFooterAnimator: UIView, RefreshAnimator {
+    public var view: UIView { self }
+    public var hb_height: CGFloat { 160 }
+    public var trigger: CGFloat { 50 }
+    private var titleLeftConstraint: NSLayoutConstraint?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .red
         
         addSubview(bgView)
         bgView.addSubview(imgView)
         bgView.addSubview(refresh)
         bgView.addSubview(textLbl)
+        titleLeftConstraint = textLbl.leftAnchor.constraint(equalTo: bgView.leftAnchor, constant: 30)
         
         NSLayoutConstraint.activate([
             bgView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            bgView.topAnchor.constraint(equalTo: topAnchor, constant: 20),
-            bgView.heightAnchor.constraint(equalToConstant: 26),
+            bgView.topAnchor.constraint(equalTo: topAnchor),
+            bgView.heightAnchor.constraint(equalToConstant: trigger),
             
             imgView.widthAnchor.constraint(equalToConstant: 20),
             imgView.heightAnchor.constraint(equalToConstant: 20),
@@ -36,7 +37,7 @@ class HBNormalFooterAnimator: UIView, RefreshAnimator {
             refresh.leftAnchor.constraint(equalTo: bgView.leftAnchor),
             refresh.centerYAnchor.constraint(equalTo: bgView.centerYAnchor),
             
-            textLbl.leftAnchor.constraint(equalTo: imgView.rightAnchor, constant: 10),
+            titleLeftConstraint!,
             textLbl.centerYAnchor.constraint(equalTo: imgView.centerYAnchor),
             textLbl.rightAnchor.constraint(equalTo: bgView.rightAnchor)
         ])
@@ -47,20 +48,25 @@ class HBNormalFooterAnimator: UIView, RefreshAnimator {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private var titleMap: [RefreshState : String] = [:]
     
+    public func setTitle(_ title: String, for state: RefreshState) {
+        titleMap[state] = title
+    }
     
-    func refreshPulling(_ scrollView: UIScrollView) {
-        textLbl.text = "上拉刷新"
+    public func refreshPulling(_ scrollView: UIScrollView) {
+        textLbl.text = titleMap[.Pulling] ?? "上拉刷新"
         refresh.isHidden = true
         imgView.isHidden = false
         UIView.animate(withDuration: 0.2) {
             [self] in
+            titleLeftConstraint?.constant = 30
             imgView.transform = .identity
         }
     }
     
-    func refreshWillRefresh(_ scrollView: UIScrollView) {
-        textLbl.text = "松开刷新"
+    public func refreshWillRefresh(_ scrollView: UIScrollView) {
+        textLbl.text = titleMap[.WillRefresh] ?? "松开刷新"
         refresh.isHidden = true
         imgView.isHidden = false
         UIView.animate(withDuration: 0.2) {
@@ -69,38 +75,40 @@ class HBNormalFooterAnimator: UIView, RefreshAnimator {
         }
     }
     
-    func refreshRefreshing(_ scrollView: UIScrollView) {
-        textLbl.text = "刷新中"
+    public func refreshRefreshing(_ scrollView: UIScrollView) {
+        textLbl.text = titleMap[.Refreshing] ?? "刷新中"
         refresh.isHidden = false
         imgView.isHidden = true
         imgView.transform = .identity
         refresh.startAnimating()
+        titleLeftConstraint?.constant = 30
     }
     
-    func refreshIdle(_ scrollView: UIScrollView) {
-        textLbl.text = "^_^"
+    public func refreshIdle(_ scrollView: UIScrollView) {
+        textLbl.text = titleMap[.Idle] ?? "^_^"
         refresh.isHidden = true
         refresh.stopAnimating()
-        imgView.isHidden = false
+        imgView.isHidden = true
         UIView.animate(withDuration: 0.2) {
             [self] in
+            titleLeftConstraint?.constant = 0
             imgView.transform = .identity
         }
     }
     
     //MARK: - getter
-    lazy var refresh: UIActivityIndicatorView = {
+    private lazy var refresh: UIActivityIndicatorView = {
         let v = UIActivityIndicatorView(style: .medium)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
     
-    lazy var bgView: UIView = {
+    private lazy var bgView: UIView = {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
-    lazy var imgView: UIImageView = {
+    private lazy var imgView: UIImageView = {
         let v = UIImageView()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.image = .init(systemName: "arrow.up")?.withTintColor(.black, renderingMode: .alwaysOriginal)
