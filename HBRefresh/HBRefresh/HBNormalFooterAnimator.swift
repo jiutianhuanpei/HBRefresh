@@ -7,6 +7,7 @@
 
 import UIKit
 
+@MainActor
 public class HBNormalFooterAnimator: UIView, RefreshAnimator {
     public var view: UIView { self }
     public var hb_height: CGFloat { 160 }

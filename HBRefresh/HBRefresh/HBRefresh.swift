@@ -36,6 +36,7 @@ public enum RefreshState {
     case Refreshing
 }
 
+@MainActor
 public protocol RefreshAnimator {
     var view: UIView { get }
     var hb_height: CGFloat { get }
