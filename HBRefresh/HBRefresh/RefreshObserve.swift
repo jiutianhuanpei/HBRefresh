@@ -22,18 +22,22 @@ class RefreshObserve: @unchecked Sendable {
     @MainActor func monitorScrollView(_ scrol: UIScrollView) {
         offsetObserve?.invalidate()
         offsetObserve = scrol.observe(\.contentOffset, options: [.old, .new], changeHandler: { [weak self] scrol, change in
-            self?.deleagtes.allObjects.forEach {
-                if let dlt = $0 as? Delegate {
-                    dlt.scrollViewContentOffsetChanged(scrol, change: change)
+            Task { @MainActor in
+                self?.deleagtes.allObjects.forEach {
+                    if let dlt = $0 as? Delegate {
+                        dlt.scrollViewContentOffsetChanged(scrol, change: change)
+                    }
                 }
             }
         })
         
         contentSizeObserve?.invalidate()
         contentSizeObserve = scrol.observe(\.contentSize, options: [.old, .new], changeHandler: { [weak self] scrol, change in
-            self?.deleagtes.allObjects.forEach {
-                if let dlt = $0 as? Delegate {
-                    dlt.scrollViewContentSizeChanged(scrol, change: change)
+            Task { @MainActor in
+                self?.deleagtes.allObjects.forEach {
+                    if let dlt = $0 as? Delegate {
+                        dlt.scrollViewContentSizeChanged(scrol, change: change)
+                    }
                 }
             }
         })
@@ -43,5 +47,4 @@ class RefreshObserve: @unchecked Sendable {
         offsetObserve?.invalidate()
         contentSizeObserve?.invalidate()
     }
-    
 }
