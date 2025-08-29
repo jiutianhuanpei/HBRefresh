@@ -7,7 +7,7 @@
 
 import UIKit
 
-@MainActor protocol ScrollContentOffsetChangePtotocol : AnyObject {
+protocol ScrollContentOffsetChangePtotocol : AnyObject {
     func scrollViewContentOffsetChanged(_ scrollView: UIScrollView, change: NSKeyValueObservedChange<CGPoint>)
     func scrollViewContentSizeChanged(_ scrollView: UIScrollView, change: NSKeyValueObservedChange<CGSize>)
 }
