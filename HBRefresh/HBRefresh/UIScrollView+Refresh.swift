@@ -24,11 +24,11 @@ extension UIScrollView : HBRefreshExtend {
             return obj
         }
     }
-
+    
 }
 
 
-extension HBRefreshExtension where ExtendType : UIScrollView {
+@MainActor extension HBRefreshExtension where ExtendType : UIScrollView {
     
     private var header: RefreshComponent? {
         let theader = type.subviews.filter {
@@ -56,7 +56,7 @@ extension HBRefreshExtension where ExtendType : UIScrollView {
         return nil
     }
     
-    @MainActor public func addHeader(_ animator: RefreshAnimator, handler: @escaping RefreshHandler) {
+    public func addHeader(_ animator: RefreshAnimator, handler: @escaping RefreshHandler) {
         header?.removeFromSuperview()
         
         let view = RefreshComponent(animator: animator, addTo: type, type: .Header)
@@ -65,8 +65,8 @@ extension HBRefreshExtension where ExtendType : UIScrollView {
         type.observer.addDelegate(view)
         type.observer.monitorScrollView(type)
     }
-
-    @MainActor public func addFooter(_ animator: RefreshAnimator, handler: @escaping RefreshHandler) {
+    
+    public func addFooter(_ animator: RefreshAnimator, handler: @escaping RefreshHandler) {
         footer?.removeFromSuperview()
         
         let view = RefreshComponent(animator: animator, addTo: type, type: .Footer)
@@ -76,19 +76,19 @@ extension HBRefreshExtension where ExtendType : UIScrollView {
         type.observer.monitorScrollView(type)
     }
     
-    @MainActor public func beginRefresh() {
+    public func beginRefresh() {
         header?.start()
     }
     
-    @MainActor public func endRefresh() {
+    public func endRefresh() {
         header?.stop()
     }
     
-    @MainActor public func beginLoadMoreData() {
+    public func beginLoadMoreData() {
         footer?.start()
     }
     
-    @MainActor public func endLoadMoreData() {
+    public func endLoadMoreData() {
         footer?.stop()
     }
 }

@@ -24,7 +24,10 @@ class RefreshObserve {
         offsetObserve = scrol.observe(\.contentOffset, options: [.old, .new], changeHandler: { [weak self] scrol, change in
             self?.deleagtes.allObjects.forEach {
                 if let dlt = $0 as? Delegate {
-                    dlt.scrollViewContentOffsetChanged(scrol, change: change)
+                    Task { @MainActor in
+                        dlt.scrollViewContentOffsetChanged(scrol, change: change)
+                    }
+                    
                 }
             }
         })
@@ -33,7 +36,9 @@ class RefreshObserve {
         contentSizeObserve = scrol.observe(\.contentSize, options: [.old, .new], changeHandler: { [weak self] scrol, change in
             self?.deleagtes.allObjects.forEach {
                 if let dlt = $0 as? Delegate {
-                    dlt.scrollViewContentSizeChanged(scrol, change: change)
+                    Task { @MainActor in
+                        dlt.scrollViewContentSizeChanged(scrol, change: change)
+                    }
                 }
             }
         })

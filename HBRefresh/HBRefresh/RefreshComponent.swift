@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol ScrollContentOffsetChangePtotocol : AnyObject {
+@MainActor protocol ScrollContentOffsetChangePtotocol : AnyObject {
     func scrollViewContentOffsetChanged(_ scrollView: UIScrollView, change: NSKeyValueObservedChange<CGPoint>)
     func scrollViewContentSizeChanged(_ scrollView: UIScrollView, change: NSKeyValueObservedChange<CGSize>)
 }
@@ -17,7 +17,7 @@ extension ScrollContentOffsetChangePtotocol {
     func scrollViewContentSizeChanged(_ scrollView: UIScrollView, change: NSKeyValueObservedChange<CGSize>) {}
 }
 
-class RefreshComponent: UIView, ScrollContentOffsetChangePtotocol {
+@MainActor class RefreshComponent: UIView, ScrollContentOffsetChangePtotocol {
     
     public enum ViewType {
         case Header
