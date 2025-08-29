@@ -7,8 +7,7 @@
 
 import UIKit
 
-@MainActor
-public class HBNormalHeaderAnimator: UIView, RefreshAnimator {
+@MainActor public class HBNormalHeaderAnimator: UIView, RefreshAnimator {
     public var view: UIView { self }
     public var hb_height: CGFloat { 150 }
     public var trigger: CGFloat { 50 }

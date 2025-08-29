@@ -13,7 +13,7 @@ extension UIScrollView : HBRefreshExtend {
     }
     
     
-     var observer: RefreshObserve {
+    @MainActor var observer: RefreshObserve {
         set {}
         get {
             if let obj = objc_getAssociatedObject(self, UnsafeRawPointer(bitPattern: RuntimeKeys.HBObserve.hashValue)!) as? RefreshObserve {
@@ -56,7 +56,7 @@ extension HBRefreshExtension where ExtendType : UIScrollView {
         return nil
     }
     
-    public func addHeader(_ animator: RefreshAnimator, handler: @escaping RefreshHandler) {
+    @MainActor public func addHeader(_ animator: RefreshAnimator, handler: @escaping RefreshHandler) {
         header?.removeFromSuperview()
         
         let view = RefreshComponent(animator: animator, addTo: type, type: .Header)
@@ -66,7 +66,7 @@ extension HBRefreshExtension where ExtendType : UIScrollView {
         type.observer.monitorScrollView(type)
     }
 
-    public func addFooter(_ animator: RefreshAnimator, handler: @escaping RefreshHandler) {
+    @MainActor public func addFooter(_ animator: RefreshAnimator, handler: @escaping RefreshHandler) {
         footer?.removeFromSuperview()
         
         let view = RefreshComponent(animator: animator, addTo: type, type: .Footer)
@@ -76,28 +76,19 @@ extension HBRefreshExtension where ExtendType : UIScrollView {
         type.observer.monitorScrollView(type)
     }
     
-    public func beginRefresh() {
+    @MainActor public func beginRefresh() {
         header?.start()
     }
     
-    public func endRefresh() {
+    @MainActor public func endRefresh() {
         header?.stop()
     }
     
-    public func beginLoadMoreData() {
+    @MainActor public func beginLoadMoreData() {
         footer?.start()
     }
     
-    public func endLoadMoreData() {
+    @MainActor public func endLoadMoreData() {
         footer?.stop()
     }
-    
 }
-
-
-//private extension NSLayoutConstraint {
-//    func configPriority(_ priority: UILayoutPriority) -> Self {
-//        self.priority = priority
-//        return self
-//    }
-//}
