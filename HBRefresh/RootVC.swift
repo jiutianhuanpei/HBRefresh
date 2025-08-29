@@ -43,7 +43,7 @@ class RootVC: UIViewController {
             }
         }
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(Self.tapTable(_:)))
+        let _ = UITapGestureRecognizer(target: self, action: #selector(Self.tapTable(_:)))
 //        table.addGestureRecognizer(tap)
         
         

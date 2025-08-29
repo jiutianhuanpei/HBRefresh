@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
 	s.license	= "MIT"
 	s.author	= { "沈红榜" => "shenhongbang@163.com" }
 	s.platform	= :ios
-	s.source	= { :git => "https://github.com/jiutianhuanpei/HBRefresh.git", :tag => "#{s.version}" }
+	s.source	= { :git => "https://github.com/jiutianhuanpei/HBRefresh.git", :tag => s.version }
 
 	s.source_files	= "HBRefresh/HBRefresh/*"
 	s.ios.deployment_target = '16.0'

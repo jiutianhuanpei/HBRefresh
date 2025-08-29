@@ -28,9 +28,9 @@ extension UIScrollView : HBRefreshExtend {
 }
 
 
-@MainActor extension HBRefreshExtension where ExtendType : UIScrollView {
+extension HBRefreshExtension where ExtendType : UIScrollView {
     
-    private var header: RefreshComponent? {
+    @MainActor private var header: RefreshComponent? {
         let theader = type.subviews.filter {
             if let v = $0 as? RefreshComponent {
                 return v.type == .Header
@@ -43,7 +43,7 @@ extension UIScrollView : HBRefreshExtend {
         return nil
     }
     
-    private var footer: RefreshComponent? {
+    @MainActor private var footer: RefreshComponent? {
         let theader = type.subviews.filter {
             if let v = $0 as? RefreshComponent {
                 return v.type == .Footer
@@ -56,7 +56,7 @@ extension UIScrollView : HBRefreshExtend {
         return nil
     }
     
-    public func addHeader(_ animator: RefreshAnimator, handler: @escaping RefreshHandler) {
+    @MainActor public func addHeader(_ animator: RefreshAnimator, handler: @escaping RefreshHandler) {
         header?.removeFromSuperview()
         
         let view = RefreshComponent(animator: animator, addTo: type, type: .Header)
@@ -66,7 +66,7 @@ extension UIScrollView : HBRefreshExtend {
         type.observer.monitorScrollView(type)
     }
     
-    public func addFooter(_ animator: RefreshAnimator, handler: @escaping RefreshHandler) {
+    @MainActor public func addFooter(_ animator: RefreshAnimator, handler: @escaping RefreshHandler) {
         footer?.removeFromSuperview()
         
         let view = RefreshComponent(animator: animator, addTo: type, type: .Footer)
@@ -76,19 +76,19 @@ extension UIScrollView : HBRefreshExtend {
         type.observer.monitorScrollView(type)
     }
     
-    public func beginRefresh() {
+    @MainActor public func beginRefresh() {
         header?.start()
     }
     
-    public func endRefresh() {
+    @MainActor public func endRefresh() {
         header?.stop()
     }
     
-    public func beginLoadMoreData() {
+    @MainActor public func beginLoadMoreData() {
         footer?.start()
     }
     
-    public func endLoadMoreData() {
+    @MainActor public func endLoadMoreData() {
         footer?.stop()
     }
 }

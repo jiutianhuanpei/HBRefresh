@@ -17,7 +17,7 @@ extension ScrollContentOffsetChangePtotocol {
     func scrollViewContentSizeChanged(_ scrollView: UIScrollView, change: NSKeyValueObservedChange<CGSize>) {}
 }
 
-@MainActor class RefreshComponent: UIView, ScrollContentOffsetChangePtotocol {
+@MainActor class RefreshComponent: UIView, @preconcurrency ScrollContentOffsetChangePtotocol {
     
     public enum ViewType {
         case Header
@@ -35,7 +35,7 @@ extension ScrollContentOffsetChangePtotocol {
     private var bottomConstraint: NSLayoutConstraint?
     private var heightConstraint: NSLayoutConstraint?
     
-    init(animator: RefreshAnimator, addTo scrollView: UIScrollView, type: ViewType) {
+    @MainActor init(animator: RefreshAnimator, addTo scrollView: UIScrollView, type: ViewType) {
         self.animator = animator
         self.scrollView = scrollView
         self.type = type
@@ -85,7 +85,7 @@ extension ScrollContentOffsetChangePtotocol {
     private var state: RefreshState = .Idle
     private var storeageInset: UIEdgeInsets = .zero
     
-    func start() {
+    @MainActor func start() {
         if state == .Refreshing {
             return
         }
@@ -121,7 +121,7 @@ extension ScrollContentOffsetChangePtotocol {
         }
     }
     
-    func stop() {
+    @MainActor func stop() {
         UIView.animate(withDuration: 0.3) { [self] in
             scrollView.contentInset = storeageInset
         } completion: { [self] _ in
@@ -132,7 +132,7 @@ extension ScrollContentOffsetChangePtotocol {
     }
     
     //MARK: - noti
-    func scrollViewContentOffsetChanged(_ scrollView: UIScrollView, change: NSKeyValueObservedChange<CGPoint>) {
+    @MainActor func scrollViewContentOffsetChanged(_ scrollView: UIScrollView, change: NSKeyValueObservedChange<CGPoint>) {
         guard let oldValue = change.oldValue,
               let newValue = change.newValue else { return }
         
@@ -206,7 +206,7 @@ extension ScrollContentOffsetChangePtotocol {
         lastIsDragging = isDragging
     }
     
-    func scrollViewContentSizeChanged(_ scrollView: UIScrollView, change: NSKeyValueObservedChange<CGSize>) {
+    @MainActor func scrollViewContentSizeChanged(_ scrollView: UIScrollView, change: NSKeyValueObservedChange<CGSize>) {
         guard let size = change.newValue,
               type == .Footer, state == .Idle else {
             return
