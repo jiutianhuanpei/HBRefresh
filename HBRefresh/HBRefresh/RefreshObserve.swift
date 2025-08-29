@@ -19,7 +19,7 @@ class RefreshObserve: @unchecked Sendable {
         deleagtes.add(dlt)
     }
     
-    func monitorScrollView(_ scrol: UIScrollView) {
+    @MainActor func monitorScrollView(_ scrol: UIScrollView) {
         offsetObserve?.invalidate()
         offsetObserve = scrol.observe(\.contentOffset, options: [.old, .new], changeHandler: { [weak self] scrol, change in
             self?.deleagtes.allObjects.forEach {
