@@ -6,15 +6,8 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		F5636A5B03063C4184992F25 /* Pods_HBRefresh.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD1B1FFE7EE017736BB61F95 /* Pods_HBRefresh.framework */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXFileReference section */
 		369D190E2E5F08B5001EAF08 /* HBRefresh.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HBRefresh.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A37CF883E9C2447132BF5A12 /* Pods-HBRefresh.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HBRefresh.debug.xcconfig"; path = "Target Support Files/Pods-HBRefresh/Pods-HBRefresh.debug.xcconfig"; sourceTree = "<group>"; };
-		CD1B1FFE7EE017736BB61F95 /* Pods_HBRefresh.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HBRefresh.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D53E42C3689B069B9CA260BE /* Pods-HBRefresh.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HBRefresh.release.xcconfig"; path = "Target Support Files/Pods-HBRefresh/Pods-HBRefresh.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -43,29 +36,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F5636A5B03063C4184992F25 /* Pods_HBRefresh.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		01D473570E2AD7FE8B5FFFCF /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				A37CF883E9C2447132BF5A12 /* Pods-HBRefresh.debug.xcconfig */,
-				D53E42C3689B069B9CA260BE /* Pods-HBRefresh.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		369D19052E5F08B5001EAF08 = {
 			isa = PBXGroup;
 			children = (
 				369D19102E5F08B5001EAF08 /* HBRefresh */,
 				369D190F2E5F08B5001EAF08 /* Products */,
-				01D473570E2AD7FE8B5FFFCF /* Pods */,
-				727B5B2CDA93CD05F48172E2 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -77,14 +58,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		727B5B2CDA93CD05F48172E2 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				CD1B1FFE7EE017736BB61F95 /* Pods_HBRefresh.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -92,11 +65,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 369D19212E5F08B6001EAF08 /* Build configuration list for PBXNativeTarget "HBRefresh" */;
 			buildPhases = (
-				078E36DD87DC70D6C0181989 /* [CP] Check Pods Manifest.lock */,
 				369D190A2E5F08B5001EAF08 /* Sources */,
 				369D190B2E5F08B5001EAF08 /* Frameworks */,
 				369D190C2E5F08B5001EAF08 /* Resources */,
-				4B6532F5E2E93DFAEC6772D6 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -154,52 +125,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		078E36DD87DC70D6C0181989 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-HBRefresh-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		4B6532F5E2E93DFAEC6772D6 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HBRefresh/Pods-HBRefresh-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HBRefresh/Pods-HBRefresh-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HBRefresh/Pods-HBRefresh-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		369D190A2E5F08B5001EAF08 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -213,7 +138,6 @@
 /* Begin XCBuildConfiguration section */
 		369D19222E5F08B6001EAF08 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A37CF883E9C2447132BF5A12 /* Pods-HBRefresh.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -243,7 +167,6 @@
 		};
 		369D19232E5F08B6001EAF08 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D53E42C3689B069B9CA260BE /* Pods-HBRefresh.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
