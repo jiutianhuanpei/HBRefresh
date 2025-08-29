@@ -8,9 +8,9 @@ Pod::Spec.new do |s|
 					DESC
 	s.homepage	= "http://shenhongbang.cc"
 	s.license	= "MIT"
-	s.author	= { "沈红榜" => "shenhongbang@ulirvision.com" }
+	s.author	= { "沈红榜" => "shenhongbang@163.com" }
 	s.platform	= :ios
-	s.source	= { :git => "http://192.168.4.103:8888/shenhongbang/HBRefresh.git", :branch => "main" }
+	s.source	= { :git => "https://github.com/jiutianhuanpei/HBRefresh.git", :tag => "#{s.version}" }
 
 	s.source_files	= "HBRefresh/HBRefresh/*"
 	s.ios.deployment_target = '16.0'
